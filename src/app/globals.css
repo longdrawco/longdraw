@@ -1,26 +1,245 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* shadcn semantic color mappings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* border radius scale */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* brand color palette — exposed as Tailwind utilities */
+  --color-charcoal: var(--color-charcoal);
+  --color-saddle: var(--color-saddle);
+  --color-oxide: var(--color-oxide);
+  --color-tan: var(--color-tan);
+  --color-yellow: var(--color-yellow);
+  --color-bone: var(--color-bone);
+  --color-forest: var(--color-forest);
+
+  /* font families — reference next/font CSS variables set on <html> */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+  --font-heading: var(--font-serif);
+
+  /* type scale — creates text-{name} Tailwind utilities */
+  --text-display: 6rem;
+  --text-h1: 4.5rem;
+  --text-h2: 3rem;
+  --text-h3: 1.875rem;
+  --text-body-lg: 1.25rem;
+  --text-body: 1.0625rem;
+  --text-body-sm: 0.9375rem;
+  --text-eyebrow: 0.75rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* shadcn component colors — bone/charcoal as base */
+  --background: #F5EFE2;
+  --foreground: #161412;
+  --card: #F5EFE2;
+  --card-foreground: #161412;
+  --popover: #F5EFE2;
+  --popover-foreground: #161412;
+  --primary: #161412;
+  --primary-foreground: #F5EFE2;
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: #161412;
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: #6B4423;
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: #161412;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: #6B4423;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.125rem;
+  --sidebar: #F5EFE2;
+  --sidebar-foreground: #161412;
+  --sidebar-primary: #161412;
+  --sidebar-primary-foreground: #F5EFE2;
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: #161412;
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: #6B4423;
+
+  /* brand color palette */
+  --color-charcoal: #161412;
+  --color-saddle: #6B4423;
+  --color-oxide: #A0432A;
+  --color-tan: #D4B888;
+  --color-yellow: #E8B833;
+  --color-bone: #F5EFE2;
+  --color-forest: #1F3329;
+
+  /* semantic aliases */
+  --bg-page: var(--color-bone);
+  --bg-footer: var(--color-charcoal);
+  --bg-inverse: var(--color-charcoal);
+  --text-primary: var(--color-charcoal);
+  --text-inverse: var(--color-bone);
+  --text-muted: var(--color-saddle);
+  --accent-hero: var(--color-oxide);
+  --accent-spark: var(--color-yellow);
+
+  /* type scale */
+  --text-display: 6rem;
+  --text-h1: 4.5rem;
+  --text-h2: 3rem;
+  --text-h3: 1.875rem;
+  --text-body-lg: 1.25rem;
+  --text-body: 1.0625rem;
+  --text-body-sm: 0.9375rem;
+  --text-eyebrow: 0.75rem;
+}
+
+.dark {
+  --background: #161412;
+  --foreground: #F5EFE2;
+  --card: oklch(0.205 0 0);
+  --card-foreground: #F5EFE2;
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: #F5EFE2;
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: #F5EFE2;
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: #F5EFE2;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #D4B888;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: #F5EFE2;
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: #F5EFE2;
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: #F5EFE2;
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: #D4B888;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-bone text-charcoal font-sans text-body;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+  }
+  /* oxide italic accent — put <em> inside any heading for emphasis */
+  h1 em, h2 em, h3 em {
+    font-style: italic;
+    color: var(--color-oxide);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Focus style — outside @layer so it overrides shadcn's utility-layer ring-3 */
+*:focus-visible {
+  outline: 2px solid var(--color-charcoal);
+  outline-offset: 2px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Custom checkbox — matches radio button sizing and border treatment */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.5rem;   /* 24px */
+  height: 1.5rem;
+  border: 1px solid #d9c7a6;
+  background-color: #ffffff;
+  border-radius: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 150ms;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:hover {
+  border-color: var(--color-oxide);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--color-charcoal);
+  border-color: var(--color-charcoal);
+}
+
+/* Checkmark via rotated border */
+input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 7px;
+  width: 6px;
+  height: 11px;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(45deg);
+}
+
+input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
