@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -36,7 +38,12 @@ const TIME_OPTIONS = [
 ];
 
 export type ServiceOption =
-  | "pressure-washing"
+  | "driveway-cleaning"
+  | "house-washing"
+  | "roof-cleaning"
+  | "fence-washing"
+  | "rust-stain-removal"
+  | "pressure-washing-other"
   | "window-washing"
   | "garage-floor-epoxy";
 
@@ -83,12 +90,22 @@ function BookingFormInner({ defaultService }: BookingFormProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [service, setService] = useState<string>(defaultService ?? "");
+  const searchParamService = searchParams.get("service");
+  const [service, setService] = useState<string>(
+    defaultService ?? searchParamService ?? ""
+  );
   const [timeWindow, setTimeWindow] = useState<string>("");
   const [firstAvailable, setFirstAvailable] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Sync service state when URL ?service param changes (sub-service CTA links)
+  useEffect(() => {
+    if (searchParamService && !defaultService) {
+      setService(searchParamService);
+    }
+  }, [searchParamService, defaultService]);
 
   function clearFieldError(field: string) {
     if (fieldErrors[field]) {
@@ -211,7 +228,15 @@ function BookingFormInner({ defaultService }: BookingFormProps) {
             <SelectValue placeholder="Select a service" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="pressure-washing">Pressure Washing</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Pressure Washing</SelectLabel>
+              <SelectItem value="driveway-cleaning">Driveway &amp; concrete</SelectItem>
+              <SelectItem value="house-washing">House washing</SelectItem>
+              <SelectItem value="roof-cleaning">Roof cleaning</SelectItem>
+              <SelectItem value="fence-washing">Fence washing</SelectItem>
+              <SelectItem value="rust-stain-removal">Rust stain removal</SelectItem>
+              <SelectItem value="pressure-washing-other">Other / not sure</SelectItem>
+            </SelectGroup>
             <SelectItem value="window-washing">Window Washing</SelectItem>
             <SelectItem value="garage-floor-epoxy">Garage Floor Epoxy</SelectItem>
           </SelectContent>
